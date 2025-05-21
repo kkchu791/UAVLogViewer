@@ -11,6 +11,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+    "/api/upload": {
+      target: "http://localhost:8000",
+      changeOrigin: true
+    },
+    "/api/chat": {
+      target: "http://localhost:8000",
+      changeOrigin: true
+    },
     "/upload/*":{
         target:"http://localhost:8001/upload",
         secure:"false"

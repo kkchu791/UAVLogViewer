@@ -35,6 +35,7 @@
                         <CesiumViewer ref="cesiumViewer"/>
                     </div>
                 </div>
+                <ChatBox />
             </main>
 
         </div>
@@ -51,6 +52,7 @@ import ParamViewer from '@/components/widgets/ParamViewer.vue'
 import MessageViewer from '@/components/widgets/MessageViewer.vue'
 import DeviceIDViewer from '@/components/widgets/DeviceIDViewer.vue'
 import AttitudeViewer from '@/components/widgets/AttitudeWidget.vue'
+import ChatBox from '@/components/widgets/ChatBox.vue'
 import { store } from '@/components/Globals.js'
 import { AtomSpinner } from 'epic-spinners'
 import { Color } from 'cesium'
@@ -239,7 +241,8 @@ export default {
         DeviceIDViewer,
         AttitudeViewer,
         MagFitTool,
-        EkfHelperTool
+        EkfHelperTool,
+        ChatBox
     },
     computed: {
         mapOk () {

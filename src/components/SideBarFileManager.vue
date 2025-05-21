@@ -151,6 +151,22 @@ export default {
             this.state.processStatus = 'Pre-processing...'
             this.state.processPercentage = 100
             this.file = file
+
+            const formData = new FormData()
+            formData.append('file', file)
+
+            fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Upload success', data)
+                })
+                .catch(error => {
+                    console.error('Upload error', error)
+                })
+
             const reader = new FileReader()
             reader.onload = function (e) {
                 const data = reader.result
