@@ -52,7 +52,8 @@ export default {
             transferMessage: '',
             state: store,
             file: null,
-            uploadStarted: false
+            uploadStarted: false,
+            sessionId: null
         }
     },
     created () {
@@ -154,6 +155,7 @@ export default {
 
             const formData = new FormData()
             formData.append('file', file)
+            formData.append('session_id', this.sessionId)
 
             fetch('/api/upload', {
                 method: 'POST',
@@ -279,6 +281,13 @@ export default {
         const url = document.location.search.split('?file=')[1]
         if (url) {
             this.onLoadSample(decodeURIComponent(url))
+        }
+        const savedSession = localStorage.getItem('session_id')
+        if (savedSession) {
+            this.sessionId = savedSession
+        } else {
+            this.sessionId = crypto.randomUUID()
+            localStorage.setItem('session_id', this.sessionId)
         }
     },
     components: {

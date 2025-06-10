@@ -11,22 +11,31 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-    "/api/upload": {
-      target: "http://localhost:8000",
-      changeOrigin: true
-    },
-    "/api/chat": {
-      target: "http://localhost:8000",
-      changeOrigin: true
-    },
-    "/upload/*":{
-        target:"http://localhost:8001/upload",
-        secure:"false"
-    },
-    "/eniro/*":{
-        target:"http://localhost:8001/eniro",
-        secure:"false"
-    },
+      "/api/upload": {
+        target: "http://localhost:8000",
+        changeOrigin: true
+      },
+      "/api/chat": {
+        target: "http://localhost:8000",
+        changeOrigin: true
+      },
+      "/api/stream": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        ws: false, // Important: this is *not* WebSocket
+        onProxyReq: (proxyReq, req, res) => {
+          // Prevent compression which can break SSE
+          req.headers['accept-encoding'] = 'identity'
+        },
+      },
+      "/upload/*":{
+          target:"http://localhost:8001/upload",
+          secure:"false"
+      },
+      "/eniro/*":{
+          target:"http://localhost:8001/eniro",
+          secure:"false"
+      },
       "/uploaded/*":{
         target:"http://localhost:8001/uploaded",
         secure:"false"

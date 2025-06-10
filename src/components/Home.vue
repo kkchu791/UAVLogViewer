@@ -1,6 +1,6 @@
 <template>
     <div id='vuewrapper' style="height: 100%;">
-        <template v-if="state.mapLoading || state.plotLoading">
+        <div v-if="state.mapLoading || state.plotLoading">
             <div id="waiting">
                 <atom-spinner
                     :animation-duration="1000"
@@ -8,7 +8,7 @@
                     :size="300"
                 />
             </div>
-        </template>
+        </div>
         <TxInputs fixed-aspect-ratio v-if="state.mapAvailable && state.showMap && state.showRadio"></TxInputs>
         <ParamViewer    @close="state.showParams = false" v-if="state.showParams"></ParamViewer>
         <MessageViewer  @close="state.showMessages = false" v-if="state.showMessages"></MessageViewer>
