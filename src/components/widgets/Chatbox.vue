@@ -25,30 +25,25 @@ export default {
     data () {
         return {
             userInput: '',
-            messages: [],
-            sessionId: null
+            messages: []
         }
     },
     mounted () {
-        const savedSession = localStorage.getItem('session_id')
-        if (savedSession) {
-            this.sessionId = savedSession
-        } else {
-            this.sessionId = crypto.randomUUID()
-            localStorage.setItem('session_id', this.sessionId)
-        }
-        this.eventSource = new EventSource(`/api/stream?sessionId=${this.sessionId}`)
-        this.eventSource.onmessage = this.handleStream
+        this.initSession()
     },
     unmounted () {
         if (this.eventSource) {
             this.eventSource.close()
+            this.eventSource = null
         }
     },
     methods: {
         async sendMessage () {
             if (!this.userInput.trim()) return
-
+            if (!this.eventSource) {
+                this.eventSource = new EventSource('/api/stream')
+                this.eventSource.onmessage = this.handleStream
+            }
             const question = this.userInput
             this.messages.push({ role: 'user', content: question })
             this.scrollToBottom()
@@ -58,9 +53,9 @@ export default {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({
-                        question,
-                        sessionId: this.sessionId
+                        question
                     })
                 })
 
@@ -69,10 +64,6 @@ export default {
                 } else {
                     console.log('something errored')
                 }
-
-                // const data = await res.json()
-                // this.sessionId = data.session_id
-                // this.messages.push({ role: 'Copilot Goose', content: data.answer })
             } catch (err) {
                 this.messages.push({
                     role: 'assistant',
@@ -115,6 +106,12 @@ export default {
             const el = event.target
             el.style.height = 'auto'
             el.style.height = (el.scrollHeight) + 'px'
+        },
+        async initSession () {
+            await fetch('/api/session', {
+                method: 'GET',
+                credentials: 'include'
+            })
         }
     }
 }
