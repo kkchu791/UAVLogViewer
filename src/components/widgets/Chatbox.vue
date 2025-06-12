@@ -96,8 +96,10 @@ export default {
         scrollToBottom () {
             this.$nextTick(() => {
                 const container = this.$refs.chatMessages
-                if (container) {
+                if (container && typeof container.scrollTo === 'function') {
                     container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' })
+                } else {
+                    console.warn('scrollTo not available on container:', container)
                 }
             })
         },
