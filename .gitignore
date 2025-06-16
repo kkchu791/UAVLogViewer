@@ -78,6 +78,6 @@ fabric.properties
 # env variables
 *.env.js
 
-
+#python environment
 .venv
 

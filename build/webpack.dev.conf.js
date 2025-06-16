@@ -56,6 +56,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
    // publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
   },
+  watchOptions: {
+    ignored: /node_modules/,
+    aggregateTimeout: 300,
+    poll: 1000,
+  },
   plugins: [
     new ESLintPlugin({fix: true}),
     new webpack.DefinePlugin({
